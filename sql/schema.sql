@@ -1,0 +1,77 @@
+-- MySQL schema for ROSE GIFTS
+CREATE DATABASE IF NOT EXISTS rose_gifts DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE rose_gifts;
+
+CREATE TABLE categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  slug VARCHAR(150) DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255),
+  description TEXT,
+  price DECIMAL(10,2) DEFAULT 0,
+  category_id INT,
+  image VARCHAR(512),
+  active TINYINT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150),
+  email VARCHAR(200) UNIQUE,
+  password_hash VARCHAR(255),
+  role VARCHAR(50) DEFAULT 'admin',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_name VARCHAR(255),
+  customer_email VARCHAR(255),
+  customer_address TEXT,
+  total DECIMAL(10,2),
+  status VARCHAR(50) DEFAULT 'Pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE order_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT,
+  product_id INT,
+  quantity INT DEFAULT 1,
+  price DECIMAL(10,2),
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+);
+
+CREATE TABLE cart_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  session_id VARCHAR(100) NOT NULL,
+  product_id INT,
+  quantity INT DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+);
+
+CREATE TABLE messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE testimonials (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  author VARCHAR(255),
+  content TEXT,
+  rating INT DEFAULT 5,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

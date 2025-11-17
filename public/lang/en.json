@@ -1,0 +1,38 @@
+{
+  "site.title": "Rose Gifts Shop",
+  "site.brand": "Rose Gifts",
+  "nav.products": "Products",
+  "nav.testimonials": "Testimonials",
+  "nav.faq": "FAQ",
+  "nav.contact": "Contact",
+  "hero.heading": "Gifts that touch hearts",
+  "hero.sub": "Premium curated gifts wrapped with elegance and love",
+  "hero.cta": "Shop Now",
+  "products.title": "Products",
+  "product.add": "Add to Cart",
+  "product.price": "Price",
+  "testimonials.title": "Testimonials",
+  "faq.title": "Common Questions",
+  "contact.title": "Contact Us",
+  "contact.name": "Name",
+  "contact.email": "Email",
+  "contact.message": "Your Message",
+  "contact.send": "Send",
+  "contact.success": "Message received successfully",
+  "contact.error": "An error occurred, try later",
+  "newsletter.title": "Newsletter",
+  "newsletter.email": "Email",
+  "newsletter.subscribe": "Subscribe",
+  "newsletter.success": "Subscribed successfully",
+  "newsletter.error": "Subscription failed",
+  "footer.rights": "All rights reserved.",
+  "misc.loading": "Loading...",
+  "cart.added": "Product added to cart",
+  "cart.error": "Error adding product"
+  ,"cart.title": "Cart"
+  ,"cart.total": "Total"
+  ,"cart.empty": "Cart is empty"
+  ,"cart.remove": "Remove"
+  ,"cart.checkout": "Checkout"
+  ,"nav.admin": "Admin"
+}

@@ -1,0 +1,38 @@
+{
+  "site.title": "متجر روز للهدايا",
+  "site.brand": "روز للهدايا",
+  "nav.products": "المنتجات",
+  "nav.testimonials": "آراء العملاء",
+  "nav.faq": "الأسئلة",
+  "nav.contact": "تواصل",
+  "hero.heading": "هدايا تلامس القلب",
+  "hero.sub": "تشكيلة راقية تغلف بذوق وتُسلم بمحبة",
+  "hero.cta": "تسوق الآن",
+  "products.title": "المنتجات",
+  "product.add": "أضف للسلة",
+  "product.price": "السعر",
+  "testimonials.title": "آراء العملاء",
+  "faq.title": "الأسئلة الشائعة",
+  "contact.title": "تواصل معنا",
+  "contact.name": "الاسم",
+  "contact.email": "البريد الإلكتروني",
+  "contact.message": "رسالتك",
+  "contact.send": "إرسال",
+  "contact.success": "تم استلام الرسالة بنجاح",
+  "contact.error": "حدث خطأ، حاول لاحقاً",
+  "newsletter.title": "النشرة البريدية",
+  "newsletter.email": "البريد الإلكتروني",
+  "newsletter.subscribe": "اشتراك",
+  "newsletter.success": "تم الاشتراك بنجاح",
+  "newsletter.error": "تعذر الاشتراك",
+  "footer.rights": "جميع الحقوق محفوظة.",
+  "misc.loading": "جارِ التحميل...",
+  "cart.added": "أضيف المنتج للسلة",
+  "cart.error": "خطأ في إضافة المنتج"
+  ,"cart.title": "السلة"
+  ,"cart.total": "الإجمالي"
+  ,"cart.empty": "السلة فارغة"
+  ,"cart.remove": "حذف"
+  ,"cart.checkout": "إتمام الشراء"
+  ,"nav.admin": "الإدارة"
+}

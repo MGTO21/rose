@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>لوحة الإدارة - روز</title>
+<meta name="robots" content="noindex,nofollow" />
+<meta name="description" content="لوحة تحكم إدارة متجر روز - إدارة المنتجات والطلبات والإعدادات" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Changa:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<style>body{opacity:0;transition:opacity .3s}body.ready{opacity:1}</style>
+</head>
+<body class="font-sans gradient-bg min-h-screen">
+<header class="sticky top-0 z-40 backdrop-blur bg-bg/80 border-b border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button id="mobileMenuBtn" class="cta px-3 py-2 text-xs md:hidden" aria-controls="adminAside" aria-expanded="false" aria-label="قائمة الإدارة">☰</button>
+      <h1 class="text-lg font-semibold">لوحة الإدارة</h1>
+    </div>
+    <div class="flex gap-2">
+      <button id="logout" class="cta px-4 py-2 text-xs">خروج</button>
+    </div>
+  </div>
+</header>
+<main class="flex">
+  <aside class="hidden md:block w-64 border-l border-white/10 min-h-screen p-4 space-y-4 sticky top-0">
+    <nav class="flex flex-col gap-2 text-sm">
+      <button class="tab-btn text-left" data-tab="products">المنتجات</button>
+      <button class="tab-btn text-left" data-tab="categories">التصنيفات</button>
+      <button class="tab-btn text-left" data-tab="banners">البانرات</button>
+      <button class="tab-btn text-left" data-tab="testimonials">التقييمات</button>
+      <button class="tab-btn text-left" data-tab="orders">الطلبات</button>
+      <button class="tab-btn text-left" data-tab="messages">الرسائل</button>
+      <button class="tab-btn text-left" data-tab="subscribers">القائمة البريدية</button>
+      <button class="tab-btn text-left" data-tab="faqs">الأسئلة</button>
+      <button class="tab-btn text-left" data-tab="settings">الإعدادات</button>
+    </nav>
+  </aside>
+  <section class="flex-1 px-4 py-8 space-y-12">
+    <!-- Products -->
+    <div class="tab-panel" id="tab-products">
+      <h2 class="section-title mb-5">المنتجات</h2>
+      <form id="productForm" class="flex flex-wrap gap-4 mb-4" enctype="multipart/form-data">
+        <input name="name" id="pName" placeholder="اسم المنتج" class="flex-1" />
+        <input name="price" id="pPrice" type="number" step="0.01" placeholder="السعر" class="w-32" />
+        <input name="image" id="pImageFile" type="file" accept="image/*" class="flex-1 text-sm" />
+        <button type="submit" class="cta px-6">إضافة</button>
+      </form>
+      <div id="productsAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+    <!-- Categories -->
+    <div class="tab-panel hidden" id="tab-categories">
+      <h2 class="section-title mb-5">التصنيفات</h2>
+      <div class="flex gap-3 mb-4">
+        <input id="catName" placeholder="اسم التصنيف" class="flex-1" />
+        <button id="addCategory" class="cta px-6">إضافة</button>
+      </div>
+      <div id="categoriesAdmin" class="space-y-3"></div>
+    </div>
+    <!-- Banners -->
+    <div class="tab-panel hidden" id="tab-banners">
+      <h2 class="section-title mb-5">البانرات</h2>
+      <form id="bannerForm" class="flex flex-wrap gap-3 mb-4" enctype="multipart/form-data">
+        <input name="title" id="banTitle" placeholder="عنوان" class="flex-1" />
+        <input name="subtitle" id="banSubtitle" placeholder="نص فرعي" class="flex-1" />
+        <input name="image" id="banImageFile" type="file" accept="image/*" class="flex-1 text-sm" />
+        <button type="submit" class="cta px-6">إضافة</button>
+      </form>
+      <div id="bannersAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+    <!-- Testimonials -->
+    <div class="tab-panel hidden" id="tab-testimonials">
+      <h2 class="section-title mb-5">التقييمات</h2>
+      <div class="flex gap-3 mb-4">
+        <input id="testAuthor" placeholder="الاسم" class="flex-1" />
+        <input id="testContent" placeholder="التقييم" class="flex-1" />
+        <button id="addTestimonial" class="cta px-6">إضافة</button>
+      </div>
+      <div id="testimonialsAdmin" class="space-y-3"></div>
+    </div>
+    <!-- Orders -->
+    <div class="tab-panel hidden" id="tab-orders">
+      <h2 class="section-title mb-5">الطلبات</h2>
+      <div class="flex flex-wrap items-center gap-3 mb-4 text-sm">
+        <label for="ordersFilter" class="opacity-80">تصفية حسب الحالة:</label>
+        <select id="ordersFilter" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 focus:outline-none focus:ring-2 focus:ring-accent/50 transition text-white/90">
+          <option value="all">الكل</option>
+          <option value="Pending">قيد المعالجة</option>
+          <option value="Delivered">تم التسليم</option>
+          <option value="Canceled">ملغي</option>
+        </select>
+      </div>
+      <div id="ordersAdmin" class="flex flex-col gap-6"></div>
+    </div>
+    <!-- Messages -->
+    <div class="tab-panel hidden" id="tab-messages">
+      <h2 class="section-title mb-5">الرسائل</h2>
+      <div id="messagesAdmin" class="space-y-3"></div>
+    </div>
+    <!-- Subscribers -->
+    <div class="tab-panel hidden" id="tab-subscribers">
+      <h2 class="section-title mb-5">القائمة البريدية</h2>
+      <div id="subsAdmin" class="space-y-3"></div>
+    </div>
+    <!-- FAQs -->
+    <div class="tab-panel hidden" id="tab-faqs">
+      <h2 class="section-title mb-5">الأسئلة الشائعة</h2>
+      <div class="flex flex-wrap gap-4 mb-4">
+        <input id="fqQ" placeholder="سؤال" class="flex-1" />
+        <input id="fqA" placeholder="إجابة" class="flex-1" />
+        <button id="addFaq" class="cta px-6">إضافة</button>
+      </div>
+      <div id="faqsAdmin" class="space-y-3"></div>
+    </div>
+    <!-- Settings -->
+    <div class="tab-panel hidden" id="tab-settings">
+      <h2 class="section-title mb-5">الإعدادات</h2>
+      <div class="flex flex-col gap-3 max-w-2xl">
+        <label class="text-sm font-semibold">عنوان البطل</label>
+        <input id="heroHeading" placeholder="عنوان البطل" />
+        <label class="text-sm font-semibold">وصف البطل</label>
+        <input id="heroSub" placeholder="وصف البطل" />
+        <label class="text-sm font-semibold">محتوى صفحة 'عن المتجر' (HTML مسموح)</label>
+        <textarea id="aboutHtml" rows="5" class="w-full" placeholder="محتوى عن المتجر"></textarea>
+        <label class="text-sm font-semibold">هاتف التواصل</label>
+        <input id="contactPhone" placeholder="مثال: +2499xxxxxxx" />
+        <label class="text-sm font-semibold">البريد الإلكتروني للتواصل</label>
+        <input id="contactEmail" placeholder="contact@example.com" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="text-sm font-semibold">فيسبوك (رابط)</label>
+            <input id="socialFacebook" placeholder="https://facebook.com/yourpage" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold">إنستغرام (رابط)</label>
+            <input id="socialInstagram" placeholder="https://instagram.com/yourpage" />
+          </div>
+          <div>
+            <label class="text-sm font-semibold">واتساب (رابط أو رقم)</label>
+            <input id="socialWhatsApp" placeholder="https://wa.me/249xx..." />
+          </div>
+          <div>
+            <label class="text-sm font-semibold">تويتر (رابط)</label>
+            <input id="socialTwitter" placeholder="https://twitter.com/yourpage" />
+          </div>
+        </div>
+        <button id="saveSettings" class="cta w-full">حفظ</button>
+        <p id="settingsStatus" class="text-sm"></p>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="/admin/admin.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>دخول الإدارة - روز</title>
+<!-- Prevent indexing of admin pages -->
+<meta name="robots" content="noindex,nofollow" />
+<meta name="description" content="لوحة دخول إدارة متجر روز - قسم الإدارة الآمن" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Changa:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<style>body{opacity:0;transition:opacity .3s}body.ready{opacity:1}</style>
+</head>
+<body class="font-sans gradient-bg min-h-screen flex items-center justify-center p-4">
+  <form id="adminLogin" class="card w-full max-w-sm space-y-4">
+    <h1 class="text-xl font-semibold text-center">دخول الإدارة</h1>
+    <input name="email" type="email" placeholder="البريد" required />
+    <input name="password" type="password" placeholder="كلمة المرور" required />
+    <button class="cta w-full" type="submit">دخول</button>
+    <p id="loginStatus" class="text-center text-sm"></p>
+  </form>
+<script>
+const API = '/api';
+function qs(s){return document.querySelector(s);} document.body.classList.add('ready');
+qs('#adminLogin').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const fd=new FormData(e.target); const payload=Object.fromEntries(fd.entries());
+  try{
+    const res = await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
+    if(res.success && res.token){ localStorage.setItem('rg_admin_token', res.token); location.href='/admin/dashboard.html'; }
+    else qs('#loginStatus').textContent='بيانات غير صحيحة';
+  }catch(err){ qs('#loginStatus').textContent='خطأ في الاتصال'; }
+});
+</script>
+</body>
+</html>
