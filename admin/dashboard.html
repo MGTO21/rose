@@ -1,155 +1,495 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>لوحة الإدارة - روز</title>
-<meta name="robots" content="noindex,nofollow" />
-<meta name="description" content="لوحة تحكم إدارة متجر روز - إدارة المنتجات والطلبات والإعدادات" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Changa:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/assets/css/style.css" />
-<style>body{opacity:0;transition:opacity .3s}body.ready{opacity:1}</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة الإدارة - روز للهدايا</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="لوحة تحكم إدارة متجر روز - إدارة المنتجات والطلبات والإعدادات" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Changa:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <style>
+    body {
+      opacity: 0;
+      transition: opacity .5s;
+      background: linear-gradient(135deg, #0c0614 0%, #1a0d20 50%, #0c0614 100%);
+    }
+
+    body.ready {
+      opacity: 1;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-link {
+      padding: 0.875rem 1.25rem;
+      border-radius: 1rem;
+      transition: all 0.3s;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .sidebar-link:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+
+    .sidebar-link.active {
+      background: rgba(255, 157, 230, 0.1);
+      color: #ff9de6;
+      border: 1px solid rgba(255, 157, 230, 0.2);
+    }
+
+    /* Cards */
+    .admin-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .admin-card:hover {
+      border-color: rgba(255, 157, 230, 0.2);
+    }
+
+    /* Inputs */
+    .admin-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.875rem 1.25rem;
+      border-radius: 1rem;
+      color: white;
+      transition: all 0.3s;
+      width: 100%;
+    }
+
+    .admin-input:focus {
+      outline: none;
+      border-color: rgba(255, 157, 230, 0.5);
+      box-shadow: 0 0 20px rgba(255, 157, 230, 0.1);
+    }
+
+    .admin-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Buttons */
+    .admin-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .admin-btn-primary {
+      background: linear-gradient(135deg, #3f0050 0%, #5a0070 100%);
+      color: white;
+    }
+
+    .admin-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 157, 230, 0.3);
+    }
+
+    .admin-btn-danger {
+      background: rgba(255, 100, 100, 0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 100, 100, 0.3);
+    }
+
+    .admin-btn-danger:hover {
+      background: rgba(255, 100, 100, 0.3);
+    }
+
+    .admin-btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Table */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table th {
+      text-align: right;
+      padding: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Section title */
+    .admin-section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .admin-section-title::before {
+      content: '';
+      width: 4px;
+      height: 1.5rem;
+      background: linear-gradient(180deg, #ff9de6, #3f0050);
+      border-radius: 2px;
+    }
+
+    /* Tab panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Mobile menu */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 40;
+    }
+
+    .mobile-overlay.active {
+      display: block;
+    }
+
+    .mobile-sidebar {
+      transform: translateX(100%);
+      transition: transform 0.3s;
+    }
+
+    @media (min-width: 768px) {
+      .mobile-sidebar {
+        transform: translateX(0) !important;
+      }
+    }
+
+    .mobile-sidebar.active {
+      transform: translateX(0);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 157, 230, 0.2);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 157, 230, 0.3);
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      color: white;
+      z-index: 100;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+  </style>
 </head>
-<body class="font-sans gradient-bg min-h-screen">
-<header class="sticky top-0 z-40 backdrop-blur bg-bg/80 border-b border-white/10">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <button id="mobileMenuBtn" class="cta px-3 py-2 text-xs md:hidden" aria-controls="adminAside" aria-expanded="false" aria-label="قائمة الإدارة">☰</button>
-      <h1 class="text-lg font-semibold">لوحة الإدارة</h1>
-    </div>
-    <div class="flex gap-2">
-      <button id="logout" class="cta px-4 py-2 text-xs">خروج</button>
-    </div>
-  </div>
-</header>
-<main class="flex">
-  <aside class="hidden md:block w-64 border-l border-white/10 min-h-screen p-4 space-y-4 sticky top-0">
-    <nav class="flex flex-col gap-2 text-sm">
-      <button class="tab-btn text-left" data-tab="products">المنتجات</button>
-      <button class="tab-btn text-left" data-tab="categories">التصنيفات</button>
-      <button class="tab-btn text-left" data-tab="banners">البانرات</button>
-      <button class="tab-btn text-left" data-tab="testimonials">التقييمات</button>
-      <button class="tab-btn text-left" data-tab="orders">الطلبات</button>
-      <button class="tab-btn text-left" data-tab="messages">الرسائل</button>
-      <button class="tab-btn text-left" data-tab="subscribers">القائمة البريدية</button>
-      <button class="tab-btn text-left" data-tab="faqs">الأسئلة</button>
-      <button class="tab-btn text-left" data-tab="settings">الإعدادات</button>
-    </nav>
-  </aside>
-  <section class="flex-1 px-4 py-8 space-y-12">
-    <!-- Products -->
-    <div class="tab-panel" id="tab-products">
-      <h2 class="section-title mb-5">المنتجات</h2>
-      <form id="productForm" class="flex flex-wrap gap-4 mb-4" enctype="multipart/form-data">
-        <input name="name" id="pName" placeholder="اسم المنتج" class="flex-1" />
-        <input name="price" id="pPrice" type="number" step="0.01" placeholder="السعر" class="w-32" />
-        <input name="image" id="pImageFile" type="file" accept="image/*" class="flex-1 text-sm" />
-        <button type="submit" class="cta px-6">إضافة</button>
-      </form>
-      <div id="productsAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
-    </div>
-    <!-- Categories -->
-    <div class="tab-panel hidden" id="tab-categories">
-      <h2 class="section-title mb-5">التصنيفات</h2>
-      <div class="flex gap-3 mb-4">
-        <input id="catName" placeholder="اسم التصنيف" class="flex-1" />
-        <button id="addCategory" class="cta px-6">إضافة</button>
-      </div>
-      <div id="categoriesAdmin" class="space-y-3"></div>
-    </div>
-    <!-- Banners -->
-    <div class="tab-panel hidden" id="tab-banners">
-      <h2 class="section-title mb-5">البانرات</h2>
-      <form id="bannerForm" class="flex flex-wrap gap-3 mb-4" enctype="multipart/form-data">
-        <input name="title" id="banTitle" placeholder="عنوان" class="flex-1" />
-        <input name="subtitle" id="banSubtitle" placeholder="نص فرعي" class="flex-1" />
-        <input name="image" id="banImageFile" type="file" accept="image/*" class="flex-1 text-sm" />
-        <button type="submit" class="cta px-6">إضافة</button>
-      </form>
-      <div id="bannersAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
-    </div>
-    <!-- Testimonials -->
-    <div class="tab-panel hidden" id="tab-testimonials">
-      <h2 class="section-title mb-5">التقييمات</h2>
-      <div class="flex gap-3 mb-4">
-        <input id="testAuthor" placeholder="الاسم" class="flex-1" />
-        <input id="testContent" placeholder="التقييم" class="flex-1" />
-        <button id="addTestimonial" class="cta px-6">إضافة</button>
-      </div>
-      <div id="testimonialsAdmin" class="space-y-3"></div>
-    </div>
-    <!-- Orders -->
-    <div class="tab-panel hidden" id="tab-orders">
-      <h2 class="section-title mb-5">الطلبات</h2>
-      <div class="flex flex-wrap items-center gap-3 mb-4 text-sm">
-        <label for="ordersFilter" class="opacity-80">تصفية حسب الحالة:</label>
-        <select id="ordersFilter" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 focus:outline-none focus:ring-2 focus:ring-accent/50 transition text-white/90">
-          <option value="all">الكل</option>
-          <option value="Pending">قيد المعالجة</option>
-          <option value="Delivered">تم التسليم</option>
-          <option value="Canceled">ملغي</option>
-        </select>
-      </div>
-      <div id="ordersAdmin" class="flex flex-col gap-6"></div>
-    </div>
-    <!-- Messages -->
-    <div class="tab-panel hidden" id="tab-messages">
-      <h2 class="section-title mb-5">الرسائل</h2>
-      <div id="messagesAdmin" class="space-y-3"></div>
-    </div>
-    <!-- Subscribers -->
-    <div class="tab-panel hidden" id="tab-subscribers">
-      <h2 class="section-title mb-5">القائمة البريدية</h2>
-      <div id="subsAdmin" class="space-y-3"></div>
-    </div>
-    <!-- FAQs -->
-    <div class="tab-panel hidden" id="tab-faqs">
-      <h2 class="section-title mb-5">الأسئلة الشائعة</h2>
-      <div class="flex flex-wrap gap-4 mb-4">
-        <input id="fqQ" placeholder="سؤال" class="flex-1" />
-        <input id="fqA" placeholder="إجابة" class="flex-1" />
-        <button id="addFaq" class="cta px-6">إضافة</button>
-      </div>
-      <div id="faqsAdmin" class="space-y-3"></div>
-    </div>
-    <!-- Settings -->
-    <div class="tab-panel hidden" id="tab-settings">
-      <h2 class="section-title mb-5">الإعدادات</h2>
-      <div class="flex flex-col gap-3 max-w-2xl">
-        <label class="text-sm font-semibold">عنوان البطل</label>
-        <input id="heroHeading" placeholder="عنوان البطل" />
-        <label class="text-sm font-semibold">وصف البطل</label>
-        <input id="heroSub" placeholder="وصف البطل" />
-        <label class="text-sm font-semibold">محتوى صفحة 'عن المتجر' (HTML مسموح)</label>
-        <textarea id="aboutHtml" rows="5" class="w-full" placeholder="محتوى عن المتجر"></textarea>
-        <label class="text-sm font-semibold">هاتف التواصل</label>
-        <input id="contactPhone" placeholder="مثال: +2499xxxxxxx" />
-        <label class="text-sm font-semibold">البريد الإلكتروني للتواصل</label>
-        <input id="contactEmail" placeholder="contact@example.com" />
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+<body class="font-sans min-h-screen text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-bg/80 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <button id="mobileMenuBtn" class="admin-btn-ghost p-3 md:hidden" aria-label="القائمة">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
+        </button>
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🌹</span>
           <div>
-            <label class="text-sm font-semibold">فيسبوك (رابط)</label>
-            <input id="socialFacebook" placeholder="https://facebook.com/yourpage" />
-          </div>
-          <div>
-            <label class="text-sm font-semibold">إنستغرام (رابط)</label>
-            <input id="socialInstagram" placeholder="https://instagram.com/yourpage" />
-          </div>
-          <div>
-            <label class="text-sm font-semibold">واتساب (رابط أو رقم)</label>
-            <input id="socialWhatsApp" placeholder="https://wa.me/249xx..." />
-          </div>
-          <div>
-            <label class="text-sm font-semibold">تويتر (رابط)</label>
-            <input id="socialTwitter" placeholder="https://twitter.com/yourpage" />
+            <h1 class="text-lg font-bold">روز للهدايا</h1>
+            <p class="text-xs text-white/40">لوحة الإدارة</p>
           </div>
         </div>
-        <button id="saveSettings" class="cta w-full">حفظ</button>
-        <p id="settingsStatus" class="text-sm"></p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/" class="admin-btn admin-btn-ghost text-sm">عرض المتجر</a>
+        <button id="logout" class="admin-btn admin-btn-danger text-sm">خروج</button>
       </div>
     </div>
-  </section>
-</main>
-<script src="/admin/admin.js" type="module"></script>
+  </header>
+
+  <!-- Mobile Overlay -->
+  <div id="mobileOverlay" class="mobile-overlay"></div>
+
+  <!-- Main Layout -->
+  <div class="flex min-h-[calc(100vh-80px)]">
+
+    <!-- Sidebar -->
+    <aside id="adminAside"
+      class="admin-sidebar fixed md:sticky top-[80px] right-0 h-[calc(100vh-80px)] w-72 p-6 z-50 mobile-sidebar md:translate-x-0">
+      <nav class="space-y-2">
+        <button class="sidebar-link active w-full" data-tab="products">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          </svg>
+          المنتجات
+        </button>
+        <button class="sidebar-link w-full" data-tab="categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          التصنيفات
+        </button>
+        <button class="sidebar-link w-full" data-tab="banners">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+          البانرات
+        </button>
+        <button class="sidebar-link w-full" data-tab="orders">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
+          </svg>
+          الطلبات
+        </button>
+        <button class="sidebar-link w-full" data-tab="messages">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          الرسائل
+        </button>
+        <button class="sidebar-link w-full" data-tab="testimonials">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          التقييمات
+        </button>
+        <button class="sidebar-link w-full" data-tab="subscribers">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
+          القائمة البريدية
+        </button>
+        <button class="sidebar-link w-full" data-tab="faqs">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          الأسئلة الشائعة
+        </button>
+        <button class="sidebar-link w-full" data-tab="settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          الإعدادات
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-8">
+
+      <!-- Products Tab -->
+      <div class="tab-panel active" id="tab-products">
+        <h2 class="admin-section-title">إدارة المنتجات</h2>
+        <form id="productForm" class="admin-card p-6 mb-6" enctype="multipart/form-data">
+          <div class="grid md:grid-cols-4 gap-4">
+            <input name="name" id="pName" placeholder="اسم المنتج" class="admin-input" required />
+            <input name="price" id="pPrice" type="number" step="0.01" placeholder="السعر" class="admin-input"
+              required />
+            <input name="image" id="pImageFile" type="file" accept="image/*" class="admin-input text-sm" />
+            <button type="submit" class="admin-btn admin-btn-primary">إضافة منتج</button>
+          </div>
+        </form>
+        <div id="productsAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+
+      <!-- Categories Tab -->
+      <div class="tab-panel" id="tab-categories">
+        <h2 class="admin-section-title">إدارة التصنيفات</h2>
+        <form id="categoryForm" class="admin-card p-6 mb-6" enctype="multipart/form-data">
+          <div class="grid md:grid-cols-3 gap-4">
+            <input name="name" id="catName" placeholder="اسم التصنيف" class="admin-input" required />
+            <input name="image" id="catImageFile" type="file" accept="image/*" class="admin-input text-sm" />
+            <button type="submit" class="admin-btn admin-btn-primary">إضافة</button>
+          </div>
+        </form>
+        <div id="categoriesAdmin" class="space-y-3"></div>
+      </div>
+
+      <!-- Banners Tab -->
+      <div class="tab-panel" id="tab-banners">
+        <h2 class="admin-section-title">إدارة البانرات</h2>
+        <form id="bannerForm" class="admin-card p-6 mb-6" enctype="multipart/form-data">
+          <div class="grid md:grid-cols-4 gap-4">
+            <input name="title" id="banTitle" placeholder="العنوان" class="admin-input" />
+            <input name="subtitle" id="banSubtitle" placeholder="النص الفرعي" class="admin-input" />
+            <input name="image" id="banImageFile" type="file" accept="image/*" class="admin-input text-sm" />
+            <button type="submit" class="admin-btn admin-btn-primary">إضافة بانر</button>
+          </div>
+        </form>
+        <div id="bannersAdmin" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div class="tab-panel" id="tab-orders">
+        <h2 class="admin-section-title">إدارة الطلبات</h2>
+        <div class="admin-card p-4 mb-6">
+          <div class="flex items-center gap-4">
+            <label class="text-white/60 text-sm">تصفية:</label>
+            <select id="ordersFilter" class="admin-input w-auto">
+              <option value="all">جميع الطلبات</option>
+              <option value="Pending">قيد المعالجة</option>
+              <option value="Delivered">تم التسليم</option>
+              <option value="Canceled">ملغي</option>
+            </select>
+          </div>
+        </div>
+        <div id="ordersAdmin" class="space-y-4"></div>
+      </div>
+
+      <!-- Messages Tab -->
+      <div class="tab-panel" id="tab-messages">
+        <h2 class="admin-section-title">الرسائل الواردة</h2>
+        <div id="messagesAdmin" class="space-y-3"></div>
+      </div>
+
+      <!-- Testimonials Tab -->
+      <div class="tab-panel" id="tab-testimonials">
+        <h2 class="admin-section-title">تقييمات العملاء</h2>
+        <div class="admin-card p-6 mb-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <input id="testAuthor" placeholder="اسم العميل" class="admin-input" />
+            <input id="testContent" placeholder="نص التقييم" class="admin-input" />
+            <button id="addTestimonial" class="admin-btn admin-btn-primary">إضافة</button>
+          </div>
+        </div>
+        <div id="testimonialsAdmin" class="space-y-3"></div>
+      </div>
+
+      <!-- Subscribers Tab -->
+      <div class="tab-panel" id="tab-subscribers">
+        <h2 class="admin-section-title">القائمة البريدية</h2>
+        <div id="subsAdmin" class="space-y-3"></div>
+      </div>
+
+      <!-- FAQs Tab -->
+      <div class="tab-panel" id="tab-faqs">
+        <h2 class="admin-section-title">الأسئلة الشائعة</h2>
+        <div class="admin-card p-6 mb-6">
+          <div class="grid md:grid-cols-3 gap-4">
+            <input id="fqQ" placeholder="السؤال" class="admin-input" />
+            <input id="fqA" placeholder="الإجابة" class="admin-input" />
+            <button id="addFaq" class="admin-btn admin-btn-primary">إضافة</button>
+          </div>
+        </div>
+        <div id="faqsAdmin" class="space-y-3"></div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="tab-panel" id="tab-settings">
+        <h2 class="admin-section-title">إعدادات المتجر</h2>
+        <div class="admin-card p-6 max-w-3xl space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-white/60 text-sm mb-2">عنوان الهيرو</label>
+              <input id="heroHeading" class="admin-input" placeholder="عنوان الصفحة الرئيسية" />
+            </div>
+            <div>
+              <label class="block text-white/60 text-sm mb-2">وصف الهيرو</label>
+              <input id="heroSub" class="admin-input" placeholder="وصف مختصر" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-white/60 text-sm mb-2">محتوى صفحة 'عن المتجر'</label>
+            <textarea id="aboutHtml" rows="4" class="admin-input" placeholder="محتوى HTML"></textarea>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-white/60 text-sm mb-2">هاتف التواصل</label>
+              <input id="contactPhone" class="admin-input" placeholder="+249xxxxxxxxx" />
+            </div>
+            <div>
+              <label class="block text-white/60 text-sm mb-2">البريد الإلكتروني</label>
+              <input id="contactEmail" class="admin-input" placeholder="contact@rose.com" />
+            </div>
+          </div>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-white/60 text-sm mb-2">فيسبوك</label>
+              <input id="socialFacebook" class="admin-input" placeholder="https://facebook.com/..." />
+            </div>
+            <div>
+              <label class="block text-white/60 text-sm mb-2">إنستغرام</label>
+              <input id="socialInstagram" class="admin-input" placeholder="https://instagram.com/..." />
+            </div>
+            <div>
+              <label class="block text-white/60 text-sm mb-2">واتساب</label>
+              <input id="socialWhatsApp" class="admin-input" placeholder="https://wa.me/..." />
+            </div>
+            <div>
+              <label class="block text-white/60 text-sm mb-2">تويتر</label>
+              <input id="socialTwitter" class="admin-input" placeholder="https://twitter.com/..." />
+            </div>
+          </div>
+          <button id="saveSettings" class="admin-btn admin-btn-primary w-full">حفظ الإعدادات</button>
+          <p id="settingsStatus" class="text-center text-sm text-accent"></p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/admin/admin.js"></script>
 </body>
+
 </html>

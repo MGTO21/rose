@@ -50,7 +50,7 @@ router.post('/products', upload.single('image'), async (req, res) => {
     const { name, description, price, category_id } = req.body;
     if (!name) return res.status(400).json({ success: false, message: 'Name required' });
     const imagePath = req.file ? ('/uploads/' + req.file.filename) : null;
-    const [result] = await db.query('INSERT INTO products (name, description, price, category_id, image, active) VALUES (?,?,?,?,?,1)', [name, description||'', parseFloat(price)||0, category_id||null, imagePath]);
+    const [result] = await db.query('INSERT INTO products (name, description, price, category_id, image, active) VALUES (?,?,?,?,?,1)', [name, description || '', parseFloat(price) || 0, category_id || null, imagePath]);
     res.json({ success: true, id: result.insertId, image: imagePath });
   } catch (e) {
     console.error(e);
@@ -103,13 +103,13 @@ router.get('/orders', async (req, res) => {
 router.put('/orders/:id/status', async (req, res) => {
   const id = req.params.id;
   const { status } = req.body;
-  if (!status) return res.status(400).json({ success:false, message:'Missing status' });
+  if (!status) return res.status(400).json({ success: false, message: 'Missing status' });
   try {
     await db.query('UPDATE orders SET status=? WHERE id=?', [status, id]);
-    res.json({ success:true });
+    res.json({ success: true });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ success:false, message:'Status update error' });
+    res.status(500).json({ success: false, message: 'Status update error' });
   }
 });
 
@@ -118,10 +118,10 @@ router.get('/metrics', async (req, res) => {
   try {
     const [[ord]] = await db.query("SELECT COUNT(*) AS total, SUM(CASE WHEN status='Pending' THEN 1 ELSE 0 END) AS pending FROM orders");
     const [[msg]] = await db.query('SELECT COUNT(*) AS total FROM messages');
-    res.json({ success:true, data: { orders: ord.total||0, pendingOrders: ord.pending||0, messages: msg.total||0 } });
+    res.json({ success: true, data: { orders: ord.total || 0, pendingOrders: ord.pending || 0, messages: msg.total || 0 } });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ success:false, message:'metrics error' });
+    res.status(500).json({ success: false, message: 'metrics error' });
   }
 });
 
@@ -132,8 +132,8 @@ router.get('/messages', async (req, res) => {
 });
 router.delete('/messages/:id', async (req, res) => {
   const id = req.params.id;
-  try { await db.query('DELETE FROM messages WHERE id=?',[id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error' }); }
+  try { await db.query('DELETE FROM messages WHERE id=?', [id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 
 // Testimonials
@@ -143,19 +143,19 @@ router.get('/testimonials', async (req, res) => {
 });
 router.post('/testimonials', async (req, res) => {
   const { name, message, active } = req.body;
-  try { const [r] = await db.query('INSERT INTO testimonials (name, message, active) VALUES (?,?,?)',[name||'', message||'', active?1:0]); res.json({ success:true, id:r.insertId }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error'}); }
+  try { const [r] = await db.query('INSERT INTO testimonials (name, message, active) VALUES (?,?,?)', [name || '', message || '', active ? 1 : 0]); res.json({ success: true, id: r.insertId }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 router.put('/testimonials/:id', async (req, res) => {
-  const id = req.params.id; const f=req.body; const sets=Object.keys(f).map(k=>`${k}=?`).join(', '); const vals=Object.values(f);
-  if(!sets) return res.status(400).json({ success:false, message:'No fields' });
-  try { await db.query(`UPDATE testimonials SET ${sets} WHERE id=?`, [...vals,id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error'}); }
+  const id = req.params.id; const f = req.body; const sets = Object.keys(f).map(k => `${k}=?`).join(', '); const vals = Object.values(f);
+  if (!sets) return res.status(400).json({ success: false, message: 'No fields' });
+  try { await db.query(`UPDATE testimonials SET ${sets} WHERE id=?`, [...vals, id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 router.delete('/testimonials/:id', async (req, res) => {
-  const id=req.params.id;
-  try { await db.query('DELETE FROM testimonials WHERE id=?',[id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error'}); }
+  const id = req.params.id;
+  try { await db.query('DELETE FROM testimonials WHERE id=?', [id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 
 // Simple analytics endpoint
@@ -175,17 +175,42 @@ router.get('/categories', async (req, res) => {
   res.json({ success: true, data: rows });
 });
 
-router.post('/categories', async (req, res) => {
-  const { name, slug } = req.body;
-  const [r] = await db.query('INSERT INTO categories (name, slug) VALUES (?, ?)', [name, slug || null]);
-  res.json({ success: true, id: r.insertId });
+router.post('/categories', upload.single('image'), async (req, res) => {
+  try {
+    const { name, slug } = req.body;
+    if (!name) return res.status(400).json({ success: false, message: 'Name required' });
+    const imagePath = req.file ? ('/uploads/' + req.file.filename) : null;
+    const [r] = await db.query('INSERT INTO categories (name, slug, image) VALUES (?, ?, ?)', [name, slug || null, imagePath]);
+    res.json({ success: true, id: r.insertId, image: imagePath });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: 'Category create error' });
+  }
 });
 
-router.put('/categories/:id', async (req, res) => {
-  const id = req.params.id;
-  const { name, slug } = req.body;
-  await db.query('UPDATE categories SET name=?, slug=? WHERE id=?', [name, slug || null, id]);
-  res.json({ success: true });
+router.put('/categories/:id', upload.single('image'), async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, slug } = req.body;
+    const imagePath = req.file ? ('/uploads/' + req.file.filename) : undefined;
+
+    let query = 'UPDATE categories SET name=?, slug=?';
+    let params = [name, slug || null];
+
+    if (imagePath !== undefined) {
+      query += ', image=?';
+      params.push(imagePath);
+    }
+
+    query += ' WHERE id=?';
+    params.push(id);
+
+    await db.query(query, params);
+    res.json({ success: true, image: imagePath });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: 'Category update error' });
+  }
 });
 
 router.delete('/categories/:id', async (req, res) => {
@@ -250,7 +275,7 @@ router.get('/faqs', async (req, res) => {
 });
 router.post('/faqs', async (req, res) => {
   const { question, answer, sort_order, active } = req.body;
-  const [r] = await db.query('INSERT INTO faqs (question, answer, sort_order, active) VALUES (?,?,?,?)', [question, answer, sort_order||0, active?1:0]);
+  const [r] = await db.query('INSERT INTO faqs (question, answer, sort_order, active) VALUES (?,?,?,?)', [question, answer, sort_order || 0, active ? 1 : 0]);
   res.json({ success: true, id: r.insertId });
 });
 router.put('/faqs/:id', async (req, res) => {
@@ -275,31 +300,31 @@ router.get('/subscribers', async (req, res) => {
 });
 router.delete('/subscribers/:id', async (req, res) => {
   const id = req.params.id;
-  try { await db.query('DELETE FROM newsletter_subscribers WHERE id=?',[id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error'}); }
+  try { await db.query('DELETE FROM newsletter_subscribers WHERE id=?', [id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 
 // Banners CRUD (title, subtitle, image, active, sort_order)
 router.get('/banners', async (req, res) => {
-  try { const [rows] = await db.query('SELECT * FROM banners ORDER BY sort_order, id'); res.json({ success:true, data: rows }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error' }); }
+  try { const [rows] = await db.query('SELECT * FROM banners ORDER BY sort_order, id'); res.json({ success: true, data: rows }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 router.post('/banners', upload.single('image'), async (req, res) => {
   const { title, subtitle, sort_order, active } = req.body;
   try {
     const imagePath = req.file ? ('/uploads/' + req.file.filename) : null;
-    const [r] = await db.query('INSERT INTO banners (title, subtitle, image, sort_order, active) VALUES (?,?,?,?,?)',[title||'', subtitle||'', imagePath, parseInt(sort_order)||0, active?1:0]);
-    res.json({ success:true, id:r.insertId, image:imagePath });
-  } catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error' }); }
+    const [r] = await db.query('INSERT INTO banners (title, subtitle, image, sort_order, active) VALUES (?,?,?,?,?)', [title || '', subtitle || '', imagePath, parseInt(sort_order) || 0, active ? 1 : 0]);
+    res.json({ success: true, id: r.insertId, image: imagePath });
+  } catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 router.put('/banners/:id', async (req, res) => {
-  const id = req.params.id; const f=req.body; const sets=Object.keys(f).map(k=>`${k}=?`).join(', '); const vals=Object.values(f);
-  if(!sets) return res.status(400).json({ success:false, message:'No fields' });
-  try { await db.query(`UPDATE banners SET ${sets} WHERE id=?`, [...vals,id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error' }); }
+  const id = req.params.id; const f = req.body; const sets = Object.keys(f).map(k => `${k}=?`).join(', '); const vals = Object.values(f);
+  if (!sets) return res.status(400).json({ success: false, message: 'No fields' });
+  try { await db.query(`UPDATE banners SET ${sets} WHERE id=?`, [...vals, id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });
 router.delete('/banners/:id', async (req, res) => {
-  const id=req.params.id;
-  try { await db.query('DELETE FROM banners WHERE id=?',[id]); res.json({ success:true }); }
-  catch(e){ console.error(e); res.status(500).json({ success:false, message:'Server error' }); }
+  const id = req.params.id;
+  try { await db.query('DELETE FROM banners WHERE id=?', [id]); res.json({ success: true }); }
+  catch (e) { console.error(e); res.status(500).json({ success: false, message: 'Server error' }); }
 });

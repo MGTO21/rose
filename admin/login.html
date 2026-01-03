@@ -1,36 +1,152 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>دخول الإدارة - روز</title>
-<!-- Prevent indexing of admin pages -->
-<meta name="robots" content="noindex,nofollow" />
-<meta name="description" content="لوحة دخول إدارة متجر روز - قسم الإدارة الآمن" />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&family=Changa:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/assets/css/style.css" />
-<style>body{opacity:0;transition:opacity .3s}body.ready{opacity:1}</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>دخول الإدارة - روز للهدايا</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="لوحة دخول إدارة متجر روز - قسم الإدارة الآمن" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Changa:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <style>
+    body {
+      opacity: 0;
+      transition: opacity .5s;
+      background: linear-gradient(135deg, #0c0614 0%, #1a0d20 50%, #0c0614 100%);
+    }
+
+    body.ready {
+      opacity: 1;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .login-card:hover {
+      border-color: rgba(255, 157, 230, 0.2);
+    }
+
+    .rose-glow {
+      box-shadow: 0 0 60px rgba(255, 157, 230, 0.1), 0 0 100px rgba(63, 0, 80, 0.1);
+    }
+
+    .input-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s;
+    }
+
+    .input-field:focus {
+      border-color: rgba(255, 157, 230, 0.5);
+      box-shadow: 0 0 20px rgba(255, 157, 230, 0.1);
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, #3f0050 0%, #5a0070 100%);
+      transition: all 0.5s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 157, 230, 0.3);
+    }
+  </style>
 </head>
-<body class="font-sans gradient-bg min-h-screen flex items-center justify-center p-4">
-  <form id="adminLogin" class="card w-full max-w-sm space-y-4">
-    <h1 class="text-xl font-semibold text-center">دخول الإدارة</h1>
-    <input name="email" type="email" placeholder="البريد" required />
-    <input name="password" type="password" placeholder="كلمة المرور" required />
-    <button class="cta w-full" type="submit">دخول</button>
-    <p id="loginStatus" class="text-center text-sm"></p>
-  </form>
-<script>
-const API = '/api';
-function qs(s){return document.querySelector(s);} document.body.classList.add('ready');
-qs('#adminLogin').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const fd=new FormData(e.target); const payload=Object.fromEntries(fd.entries());
-  try{
-    const res = await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(r=>r.json());
-    if(res.success && res.token){ localStorage.setItem('rg_admin_token', res.token); location.href='/admin/dashboard.html'; }
-    else qs('#loginStatus').textContent='بيانات غير صحيحة';
-  }catch(err){ qs('#loginStatus').textContent='خطأ في الاتصال'; }
-});
-</script>
+
+<body class="font-sans min-h-screen flex items-center justify-center p-4">
+  <!-- Decorative Elements -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[150px] animate-pulse"></div>
+    <div
+      class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[150px] animate-pulse delay-700">
+    </div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-md">
+    <!-- Logo -->
+    <div class="text-center mb-10">
+      <div
+        class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/5 border border-white/10 mb-6 rose-glow">
+        <span class="text-4xl">🌹</span>
+      </div>
+      <h1 class="text-3xl font-brand text-white mb-2">روز للهدايا</h1>
+      <p class="text-white/50 text-sm">لوحة التحكم الإدارية</p>
+    </div>
+
+    <!-- Login Form -->
+    <form id="adminLogin" class="login-card rounded-3xl p-8 space-y-6 rose-glow">
+      <div class="text-center mb-6">
+        <h2 class="text-xl font-bold text-white">تسجيل الدخول</h2>
+        <p class="text-white/40 text-sm mt-1">أدخل بيانات الاعتماد للمتابعة</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-white/60 text-sm mb-2">البريد الإلكتروني</label>
+          <input name="email" type="email" placeholder="admin@rose.com" required
+            class="input-field w-full px-5 py-4 rounded-2xl text-white placeholder:text-white/30 outline-none" />
+        </div>
+        <div>
+          <label class="block text-white/60 text-sm mb-2">كلمة المرور</label>
+          <input name="password" type="password" placeholder="••••••••" required
+            class="input-field w-full px-5 py-4 rounded-2xl text-white placeholder:text-white/30 outline-none" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login w-full py-4 rounded-2xl text-white font-bold text-lg">
+        دخول
+      </button>
+
+      <p id="loginStatus" class="text-center text-sm text-red-400"></p>
+    </form>
+
+    <!-- Footer -->
+    <p class="text-center text-white/30 text-xs mt-8">© 2025 روز للهدايا. جميع الحقوق محفوظة.</p>
+  </div>
+
+  <script>
+    const API = '/api';
+    function qs(s) { return document.querySelector(s); }
+    document.body.classList.add('ready');
+
+    qs('#adminLogin').addEventListener('submit', async e => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = Object.fromEntries(fd.entries());
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'جاري الدخول...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API + '/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(r => r.json());
+
+        if (res.success && res.token) {
+          localStorage.setItem('rg_admin_token', res.token);
+          location.href = '/admin/dashboard.html';
+        } else {
+          qs('#loginStatus').textContent = 'بيانات الدخول غير صحيحة';
+          btn.textContent = 'دخول';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        qs('#loginStatus').textContent = 'خطأ في الاتصال بالخادم';
+        btn.textContent = 'دخول';
+        btn.disabled = false;
+      }
+    });
+  </script>
 </body>
+
 </html>
